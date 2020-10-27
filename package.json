@@ -1,0 +1,21 @@
+{
+  "main": "giveaway.js",
+  "author": "DarkBoy",
+  "scripts": {
+    "start": "nodemon giveaway.js"
+  },
+  "dependencies": {
+      "discord.js": "^12.3.1",
+     "fs": "0.0.1-security",
+     "ms": "^2.1.2",
+    "nodemon": "^2.0.4",
+    "parse-ms": "^2.1.0",
+    "path": "^0.12.7",
+    "pretty-ms": "^7.0.1",
+     "quickmongo": "^2.0.4"
+ 
+  },
+  "engines": {
+    "node": "12.x"
+  }
+}
