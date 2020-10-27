@@ -75,6 +75,13 @@ client.on('messageReactionAdd', async (reaction, user) => {
        if(member.roles.cache.has(`${giveawayrole}`)) return user.send(embed)
 if(!member.roles.cache.has(`${giveawayrole}`)) { 
   reaction.users.remove(user.id)
+       let ffff = new Discord.MessageEmbed()
+      .setThumbnail(reaction.message.guild.iconURL())
+      .setTitle(`Entry Denied!`)
+      .setDescription(`**You Cant Join!!**
+      
+       [Go To Giveaway](https://discord.com/channels/${reaction.message.guild.id}/${reaction.message.channel.id}/${reaction.message.id})
+        `)
   return user.send(ffff);
 }
  
