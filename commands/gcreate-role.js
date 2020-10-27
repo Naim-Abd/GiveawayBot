@@ -61,7 +61,7 @@ await giveaway.edit(edittimer)
  if(!member.roles.cache.has(role.id)) {
     let winners = list[Math.floor(Math.random() * list.length) + 0]
   }
-                  if(!gFilter) gFilter =" No One Won"
+                  if(!winners) winners =" No One Won"
 o.edit(`:tada: :tada: **GIVEAWAY ENDED** :tada: :tada:`)
 let editembed = new Discord.MessageEmbed()
  .setDescription(`
@@ -75,6 +75,9 @@ db.delete(`GiveawayRole_${giveaway.id}`)
 db.delete(`giveawaytimer_${o.id}`)
 clearInterval(giveAwayCut)
 giveaway.edit(editembed)
+clearInterval(giveAwayCut)
+giveaway.edit(editembed)
+
  }, ms(args[2]));
  
  })
