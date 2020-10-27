@@ -81,3 +81,4 @@ if(!member.roles.cache.has(`${giveawayrole}`)) {
 
       }
 })
+ client.login(config.token)
