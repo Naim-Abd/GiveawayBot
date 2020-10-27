@@ -4,7 +4,7 @@
 const pretty = require('pretty-ms')
  module.exports = {
     name: "gcreate-role",
-    description: "Giveaway Role Req",
+    description: "Role Giveaway Command",
     run: async (client, message, args, db, prefix) => {
  let channel = message.mentions.channels.first()
  if(!channel) return message.channel.send(`**${prefix}gcreate <channel> <Role> <time> <Prize>**`)
@@ -14,7 +14,9 @@ const pretty = require('pretty-ms')
  if(!role) return message.channel.send(`**${prefix}gcreate ${channel} <Role> <time> <Prize>**`)
  let rolecheck = message.guild.roles.cache.find(x => x.name == `${role.name}`)
  if(!rolecheck) return message.channel.send(`This invaild Role..`)
- if(!args[2]) return message.channel.send(`**${prefix}gcreate ${channel} ${role.name} <time> <Prize>**`)
+ if(!args[2]) return message.channel.send(`**${prefix}gcreate ${channel} ${role.name} <time> <Prize>**
+ 
+ __1d,2h,1m,1s__`)
  let prize = message.content.split(' ').slice(4).join(' ');
 
 if(!prize) return message.channel.send(`**${prefix}gcreate ${channel} ${role.name} ${args[2]} <Prize>**`)
@@ -31,13 +33,15 @@ Hosted By: ${message.author}
 `)
 .setFooter(message.guild.name , message.guild.iconURL())
 .setTimestamp()
- channel.send(giveawayEmbed).then(async giveaway =>  {
+console.log(ms(args[2]))
+channel.send(giveawayEmbed).then(async giveaway =>  {
     db.set(`GiveawayEmbed_${giveaway.id}`,giveaway.id)
     db.set(`GiveawayRole_${giveaway.id}`, role.id)
    giveaway.react(`🎉`)
- db.set(`giveawaytimer_${o.id}`, ms(args[2]))
+   console.log(ms(args[2]))
+db.set(`giveawaytimer_${o.id}`, ms(args[2]))
    var giveAwayCut = setInterval(async function() {
- db.subtract(`giveawaytimer_${o.id}`, 5000)
+ await db.subtract(`giveawaytimer_${o.id}`, 5000)
 let ends = await db.get(`giveawaytimer_${o.id}`)
 let okay = ends - 5000
 let edittimer = new Discord.MessageEmbed()
@@ -56,16 +60,16 @@ await giveaway.edit(edittimer)
    setTimeout(async function(){
                   let users = await giveaway.reactions.cache.get("🎉").users.fetch();
                   let list = users.array().filter(u => u.id !== client.user.id);
-                  let winners = list[Math.floor(Math.random() * list.length) + 0]
-                  let member = message.guild.members.cache.get(winners.id) 
+                  let gFilter = list[Math.floor(Math.random() * list.length) + 0]
+                  let member = message.guild.members.cache.get(gFilter.id) 
  if(!member.roles.cache.has(role.id)) {
-    let winners = list[Math.floor(Math.random() * list.length) + 0]
+    let gFilter = list[Math.floor(Math.random() * list.length) + 0]
   }
-                  if(!winners) winners =" No One Won"
+                  if(!gFilter) gFilter =" No One Won"
 o.edit(`:tada: :tada: **GIVEAWAY ENDED** :tada: :tada:`)
 let editembed = new Discord.MessageEmbed()
  .setDescription(`
- Winners: ${winners}
+ Winners: ${gFilter}
  `)
 .setFooter(message.guild.name , message.guild.iconURL())
 .setTimestamp()
@@ -73,10 +77,10 @@ let editembed = new Discord.MessageEmbed()
 db.delete(`GiveawayEmbed_${giveaway.id}`)
 db.delete(`GiveawayRole_${giveaway.id}`)
 db.delete(`giveawaytimer_${o.id}`)
-clearInterval(giveAwayCut)
-giveaway.edit(editembed)
-clearInterval(giveAwayCut)
-giveaway.edit(editembed)
+clearInterval(giveAwayCut);
+giveaway.edit(editembed);
+await clearInterval(giveAwayCut);
+await giveaway.edit(editembed);
 
  }, ms(args[2]));
  
