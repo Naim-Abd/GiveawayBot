@@ -3,8 +3,8 @@
  const ms = require('ms')
 const pretty = require('pretty-ms')
  module.exports = {
-    name: "gcreate",
-    description: "set auto-partner channel",
+    name: "gcreate-role",
+    description: "Giveaway Role Req",
     run: async (client, message, args, db, prefix) => {
  let channel = message.mentions.channels.first()
  if(!channel) return message.channel.send(`**${prefix}gcreate <channel> <Role> <time> <Prize>**`)
@@ -31,13 +31,11 @@ Hosted By: ${message.author}
 `)
 .setFooter(message.guild.name , message.guild.iconURL())
 .setTimestamp()
-console.log(ms(args[2]))
-channel.send(giveawayEmbed).then(async giveaway =>  {
+ channel.send(giveawayEmbed).then(async giveaway =>  {
     db.set(`GiveawayEmbed_${giveaway.id}`,giveaway.id)
     db.set(`GiveawayRole_${giveaway.id}`, role.id)
    giveaway.react(`🎉`)
-   console.log(ms(args[2]))
-db.set(`giveawaytimer_${o.id}`, ms(args[2]))
+ db.set(`giveawaytimer_${o.id}`, ms(args[2]))
    var giveAwayCut = setInterval(async function() {
  db.subtract(`giveawaytimer_${o.id}`, 4500)
 let ends = await db.get(`giveawaytimer_${o.id}`)
