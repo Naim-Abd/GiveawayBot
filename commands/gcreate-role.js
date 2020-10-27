@@ -37,9 +37,9 @@ Hosted By: ${message.author}
    giveaway.react(`🎉`)
  db.set(`giveawaytimer_${o.id}`, ms(args[2]))
    var giveAwayCut = setInterval(async function() {
- db.subtract(`giveawaytimer_${o.id}`, 4500)
+ db.subtract(`giveawaytimer_${o.id}`, 5000)
 let ends = await db.get(`giveawaytimer_${o.id}`)
-let okay = ends - 4500
+let okay = ends - 5000
 let edittimer = new Discord.MessageEmbed()
 .setTitle(prize)
 .setDescription(`
@@ -52,7 +52,7 @@ Ends After ${pretty(okay)}
 await giveaway.edit(edittimer)
 
 
-},4500)
+},5000)
    setTimeout(async function(){
                   let users = await giveaway.reactions.cache.get("🎉").users.fetch();
                   let list = users.array().filter(u => u.id !== client.user.id);
