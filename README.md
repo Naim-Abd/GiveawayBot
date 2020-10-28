@@ -1,8 +1,8 @@
 <h1 align="center">Giveaway Bot</h1>
 
 
-## (ALPHA VERISON ##
-- THIS VERISON MAY EXPRESSION ALOT OF BUGS (DAILY UPDATES)
+## (ALPHA VERISON) ##
+- THIS VERISON MAY SHOW A LOT OF BUGS (DAILY UPDATES)
 
 
 ## 📝 Starting Up
