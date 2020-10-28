@@ -55,9 +55,7 @@ client.on("message", async message => {
   if(!giveawayrole) return;
    if(reaction.message.id == giveawayid && reaction.emoji.name == `🎉`) {
     var home = await db.get(`giveawaydone_${reaction.message.id}`)
-    if(!member.roles.cache.has(`${role.id}`)) { 
-      reaction.users.remove(user.id) 
-     }
+      }
     
     var reactioncheck = setInterval(async function() {
   
