@@ -1,15 +1,13 @@
 const Discord = require('discord.js')
-const client = new Discord.Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
-const { Database } = require("quickmongo");
+const client = new Discord.Client({ 
+  disableEveryone: true,
+  partials : ["MESSAGE", "CHANNEL", "REACTION"]
+ });
+ const { Database } = require("quickmongo");
 const config = require('./config.json')
-const discord = require('discord.js')
 const db = new Database(config.database);  
 const prefix = config.prefix; 
- db.on("ready", () => {
-    console.log("Database connected!");  
-  });
-
-   
+ 
 client.on('ready', () => {
  console.log("App Connected! " , client.user.tag)
  })
@@ -17,9 +15,7 @@ client.commands= new Discord.Collection();
 
 const { join } = require('path');
 const { readdirSync } = require('fs');
-const { O_RDONLY, S_IFMT } = require('constants');
-const { count } = require('console');
-const commandFiles = readdirSync(join(__dirname, "commands")).filter(file => file.endsWith(".js"));
+ const commandFiles = readdirSync(join(__dirname, "commands")).filter(file => file.endsWith(".js"));
 
 for (const file of commandFiles) {
     const command = require(join(__dirname, "commands", `${file}`));
@@ -47,9 +43,7 @@ client.on("message", async message => {
        }
   })
 
-// GIVEAWAY PART
-// THATS NOT THE FULL VERISON IT'S ALPHA!
-client.on('messageReactionAdd', async (reaction, user) => {
+ client.on('messageReactionAdd', async (reaction, user) => {
   console.log(user.username)
   if(user.partial) await user.fetch();
   if(reaction.partial) await reaction.fetch();
@@ -61,31 +55,55 @@ client.on('messageReactionAdd', async (reaction, user) => {
   let giveawayrole = await db.get(`GiveawayRole_${reaction.message.id}`)
   if(!giveawayrole) return;
    if(reaction.message.id == giveawayid && reaction.emoji.name == `🎉`) {
-      let member = reaction.message.guild.members.cache.get(user.id) 
-      let embed = new Discord.MessageEmbed()
-      .setThumbnail(reaction.message.guild.iconURL())
-      .setTitle(`Entry Arpoved!`)
-      .setDescription(`**Done!**
-      
-       [Go To Giveaway](https://discord.com/channels/${reaction.message.guild.id}/${reaction.message.channel.id}/${reaction.message.id})
-        `)
-      .setTimestamp()
-      .setFooter(reaction.message.guild.name , reaction.message.guild.iconURL())
-      
-       if(member.roles.cache.has(`${giveawayrole}`)) return user.send(embed)
-if(!member.roles.cache.has(`${giveawayrole}`)) { 
-  reaction.users.remove(user.id)
-       let ffff = new Discord.MessageEmbed()
-      .setThumbnail(reaction.message.guild.iconURL())
-      .setTitle(`Entry Denied!`)
-      .setDescription(`**You Cant Join!!**
-      
-       [Go To Giveaway](https://discord.com/channels/${reaction.message.guild.id}/${reaction.message.channel.id}/${reaction.message.id})
-        `)
-  return user.send(ffff);
-}
- 
+    var home = await db.get(`giveawaydone_${reaction.message.id}`)
+    if(!member.roles.cache.has(`${role.id}`)) { 
+      reaction.users.remove(user.id) 
+     }
+    
+    var reactioncheck = setInterval(async function() {
+  
+       let member = reaction.message.guild.members.cache.get(user.id) 
+      let guild = client.guilds.cache.get(reaction.message.guild.id)
+      let role = guild.roles.cache.find(role => role.id === `${giveawayrole}`); 	      
 
+      if(!member.roles.cache.has(`${role.id}`)) { 
+        reaction.users.remove(user.id) 
+       }
+       
+ 
+if(home === null) {
+    clearInterval()
+    clearInterval(reactioncheck);
+  return;
+}
+if(!home) {
+  clearInterval()
+  clearInterval(reactioncheck);
+return;
+}
+},5000);
+let member = reaction.message.guild.members.cache.get(user.id) 
+let guild = client.guilds.cache.get(reaction.message.guild.id)
+let role = guild.roles.cache.find(role => role.id === `${giveawayrole}`)
+let ffff = new Discord.MessageEmbed()
+.setThumbnail(reaction.message.guild.iconURL())
+.setTitle(`Giveaway Entry Denied!`)
+ .setColor(`#ff0000`)
+.setDescription(`**There is a requirement of role you Must Have That Role to enter the giveaway!**\n\n*by reacting to a message sent by Giveaway, you agree to be messaged.*
+
+  `)	
+  let embed = new Discord.MessageEmbed()
+  .setThumbnail(reaction.message.guild.iconURL())
+  .setTitle(`Giveaway Entry Arpoved!`)
+  .setColor(`#00FF00`)
+  .setDescription(`**Your Entry for [this giveaway](https://discord.com/channels/${reaction.message.guild.id}/${reaction.message.channel.id}/${reaction.message.id}) has been approved!**\n\n*by reacting to a message sent by Giveaway, you agree to be messaged.*
+  
+    `)
+  .setTimestamp()
+  .setFooter(reaction.message.guild.name , reaction.message.guild.iconURL())
+if(member.roles.cache.has(`${role.id}`)) return user.send(embed)
+if(!member.roles.cache.has(`${role.id}`)) return user.send(ffff)
       }
 })
- client.login(config.token)
+ 
+client.login(config.token)
