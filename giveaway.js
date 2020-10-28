@@ -3,9 +3,8 @@ const client = new Discord.Client({
   disableEveryone: true,
   partials : ["MESSAGE", "CHANNEL", "REACTION"]
  });
- const { Database } = require("quickmongo");
-const config = require('./config.json')
-const db = new Database(config.database);  
+ const config = require('./config.json')
+const db = require('quick.db')
 const prefix = config.prefix; 
  
 client.on('ready', () => {
