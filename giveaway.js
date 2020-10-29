@@ -1,10 +1,14 @@
 const Discord = require('discord.js')
-const client = new Discord.Client({ ws:
-  ['GUILDS', 'GUILD_MESSAGES', 'GUILD_MEMBERS']})
- const config = require('./config.json')
+const client = new Discord.Client()
+const config = require('./config.json')
 const db = require('quick.db')
 const prefix = config.prefix; 
- 
+const express = require("express");
+const app = express();
+app.get("/", (req, res) => {
+  res.sendStatus(200);
+});
+
 client.on('ready', () => {
  console.log("App Connected! " , client.user.tag)
  })
@@ -111,9 +115,9 @@ client.on('messageReactionAdd', async (reaction, user) => {
    if(reaction.message.id == giveawayid && reaction.emoji.name == `🎉`) {
      console.log(user.id)
      console.log(user)
-let guild = await client.guilds.cache.get(giveawayids)
-let guildcheck = await guild.members.fetch(user.id)
-console.log(guildcheck)     
+let guild = client.guilds.cache.get(giveawayids)
+let guildcheck = guild.member(user.id)
+
      var reactioncheck = setInterval(async function() {
    if(!guildcheck) { return reaction.users.remove(user.id); }
     
@@ -134,8 +138,7 @@ console.log(guildcheck)
       .setDescription(`**There is a requirement of role you Must Have That Role to enter the giveaway!**\n\n*by reacting to a message sent by Giveaway, you agree to be messaged.*`)
     reaction.users.remove(user.id)
       user.send(ffff)  
-           
-    }
+     }
    }
 })
  
