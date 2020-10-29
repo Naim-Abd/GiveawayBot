@@ -64,8 +64,7 @@ await giveaway.edit(edittimer)
                   let users = await giveaway.reactions.cache.get("🎉").users.fetch();
                   let list = users.array().filter(u => u.id !== client.user.id);
                   let winners = list[Math.floor(Math.random() * list.length) + 0]
-                  let member = message.guild.members.cache.get(winners.id) 
-                   if(!winners) winners =" No One Won"
+                    if(!winners) winners =" No One Won"
 o.edit(`**:tada: :tada: **GIVEAWAY ENDED** :tada: :tada:!**`)
 let editembed = new Discord.MessageEmbed()
  .setTitle(`${prize}`)
