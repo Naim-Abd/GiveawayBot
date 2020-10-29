@@ -30,7 +30,7 @@ React With 🎉 To Enter The Giveaway
 Ends At: ${pretty(ms(args[2]))}  
 Hosted By: ${message.author}
 
-<:announcementchannel:770741172557316106> Must Have ${role} Role To Enter!`)
+ Must Have ${role} Role To Enter!`)
 .setFooter(message.guild.name , message.guild.iconURL())
 .setTimestamp()
  channel.send(giveawayEmbed).then(async giveaway =>  {
@@ -52,7 +52,7 @@ React With 🎉 To Enter The Giveaway
 Ends After: ${pretty(okay)}
 Hosted By: ${message.author}
 
-<:progress:756126873704071268> Must Have ${role} Role To Enter!`)
+Must Have ${role} Role To Enter!`)
 .setFooter(message.guild.name , message.guild.iconURL())
 .setTimestamp()
 await giveaway.edit(edittimer)
