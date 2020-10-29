@@ -1,5 +1,6 @@
 const Discord = require('discord.js')
-const client = new Discord.Client({ ws: { intents: ['GUILDS', 'GUILD_MESSAGES', 'GUILD_MEMBERS'] } })
+const client = new Discord.Client({ ws:
+  ['GUILDS', 'GUILD_MESSAGES', 'GUILD_MEMBERS']})
  const config = require('./config.json')
 const db = require('quick.db')
 const prefix = config.prefix; 
@@ -40,12 +41,14 @@ client.on("message", async message => {
   })
 
  client.on('messageReactionAdd', async (reaction, user) => {
-   if(user.partial) await user.fetch();
+  console.log(user.username)
+  if(user.partial) await user.fetch();
   if(reaction.partial) await reaction.fetch();
   if(reaction.message.partial) await reaction.message.fetch();
   if(user.bot) return;
   let giveawayid = await db.get(`GiveawayEmbed_${reaction.message.id}`)
-   if(!giveawayid) return
+  console.log(giveawayid)
+  if(!giveawayid) return
   let giveawayrole = await db.get(`GiveawayRole_${reaction.message.id}`)
   if(!giveawayrole) return;
    if(reaction.message.id == giveawayid && reaction.emoji.name == `🎉`) {
@@ -106,31 +109,34 @@ client.on('messageReactionAdd', async (reaction, user) => {
   let giveawayids = await db.get(`GiveawayID_${reaction.message.id}`)
   if(!giveawayids) return;
    if(reaction.message.id == giveawayid && reaction.emoji.name == `🎉`) {
-     let guild = client.guilds.cache.get(giveawayids)
-     if(!giveawayids) return reaction.message.guild.owner.send(`**IT's looks you've made agiveaway for server req Giveaway [this giveaway](https://discord.com/channels/${reaction.message.guild.id}/${reaction.message.channel.id}/${reaction.message.id}) 
-     and its looks i got kicked from there (Feel Free) To cancel the giveaway or invite me back there! `)
-     let guildcheck = guild.members.cache.get(user.id)
-     var home = await db.get(`giveawaydone_${reaction.message.id}`)
-     
+     console.log(user.id)
+     console.log(user)
+let guild = await client.guilds.cache.get(giveawayids)
+let guildcheck = await guild.members.fetch(user.id)
+console.log(guildcheck)     
      var reactioncheck = setInterval(async function() {
-      if(!guildcheck) reaction.users.remove(user.id)
+   if(!guildcheck) { return reaction.users.remove(user.id); }
     
-    },5000) 
-     if(!guildcheck) {
-      let ffff = new Discord.MessageEmbed()
+    },5000)
+    if(guildcheck) {
+      let embed = new Discord.MessageEmbed()
+    .setThumbnail(reaction.message.guild.iconURL())
+    .setTitle(`Giveaway Entry Arpoved!`)
+    .setColor(`#00FF00`)
+    .setDescription(`**Your Entry for [this giveaway](https://discord.com/channels/${reaction.message.guild.id}/${reaction.message.channel.id}/${reaction.message.id}) has been approved!**\n\n*by reacting to a message sent by Giveaway, you agree to be messaged.*`)
+    user.send(embed) 
+           }
+           if(!guildcheck) {
+       let ffff = new Discord.MessageEmbed()
       .setThumbnail(reaction.message.guild.iconURL())
       .setTitle(`Giveaway Entry Denied!`)
        .setColor(`#ff0000`)
       .setDescription(`**There is a requirement of role you Must Have That Role to enter the giveaway!**\n\n*by reacting to a message sent by Giveaway, you agree to be messaged.*`)
     reaction.users.remove(user.id)
-      user.send(ffff)
-     }
-     let embed = new Discord.MessageEmbed()
-    .setThumbnail(reaction.message.guild.iconURL())
-    .setTitle(`Giveaway Entry Arpoved!`)
-    .setColor(`#00FF00`)
-    .setDescription(`**Your Entry for [this giveaway](https://discord.com/channels/${reaction.message.guild.id}/${reaction.message.channel.id}/${reaction.message.id}) has been approved!**\n\n*by reacting to a message sent by Giveaway, you agree to be messaged.*`)
-    user.send(embed)  
-  }
+      user.send(ffff)  
+           
+    }
+   }
 })
+ 
 client.login(config.token)
