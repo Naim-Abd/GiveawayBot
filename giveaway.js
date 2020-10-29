@@ -1,8 +1,5 @@
 const Discord = require('discord.js')
-const client = new Discord.Client({ 
-  disableEveryone: true,
-  partials : ["MESSAGE", "CHANNEL", "REACTION"]
- });
+const client = new discord.Client({ ws: { intents: ['GUILDS', 'GUILD_MESSAGES', 'GUILD_MEMBERS'] } })
  const config = require('./config.json')
 const db = require('quick.db')
 const prefix = config.prefix; 
