@@ -43,20 +43,17 @@ client.on("message", async message => {
   })
 
  client.on('messageReactionAdd', async (reaction, user) => {
-  console.log(user.username)
-  if(user.partial) await user.fetch();
+   if(user.partial) await user.fetch();
   if(reaction.partial) await reaction.fetch();
   if(reaction.message.partial) await reaction.message.fetch();
   if(user.bot) return;
   let giveawayid = await db.get(`GiveawayEmbed_${reaction.message.id}`)
-  console.log(giveawayid)
-  if(!giveawayid) return
+   if(!giveawayid) return
   let giveawayrole = await db.get(`GiveawayRole_${reaction.message.id}`)
   if(!giveawayrole) return;
    if(reaction.message.id == giveawayid && reaction.emoji.name == `🎉`) {
     var home = await db.get(`giveawaydone_${reaction.message.id}`)
-      }
-    
+     
     var reactioncheck = setInterval(async function() {
   
        let member = reaction.message.guild.members.cache.get(user.id) 
@@ -100,7 +97,7 @@ let ffff = new Discord.MessageEmbed()
   .setFooter(reaction.message.guild.name , reaction.message.guild.iconURL())
 if(member.roles.cache.has(`${role.id}`)) return user.send(embed)
 if(!member.roles.cache.has(`${role.id}`)) return user.send(ffff)
-      }
+}
 })
  
 client.login(config.token)
