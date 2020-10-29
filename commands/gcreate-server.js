@@ -35,6 +35,7 @@ Must Join [${invite.guild.name}](${args[1]}) To Enter!`)
 .setTimestamp()
  channel.send(giveawayEmbed).then(async giveaway =>  {
     db.set(`GiveawayEmbed_${giveaway.id}`,giveaway.id)
+    console.log(invite.guild.id)
     db.set(`GiveawayID_${giveaway.id}`, invite.guild.id)
    giveaway.react(`🎉`)
  db.set(`giveawaytimer_${o.id}`, ms(args[2]))
