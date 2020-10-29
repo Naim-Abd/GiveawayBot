@@ -99,7 +99,7 @@ if(member.roles.cache.has(`${role.id}`)) return user.send(embed)
 if(!member.roles.cache.has(`${role.id}`)) return user.send(ffff)
 }
 })
- client.on('messageReactionAdd', async (reaction, user) => {
+client.on('messageReactionAdd', async (reaction, user) => {
    if(user.partial) await user.fetch();
   if(reaction.partial) await reaction.fetch();
   if(reaction.message.partial) await reaction.message.fetch();
@@ -128,15 +128,12 @@ if(!member.roles.cache.has(`${role.id}`)) return user.send(ffff)
     reaction.users.remove(user.id)
       user.send(ffff)
      }
-  if(guildcheck) {
-    let embed = new Discord.MessageEmbed()
+     let embed = new Discord.MessageEmbed()
     .setThumbnail(reaction.message.guild.iconURL())
     .setTitle(`Giveaway Entry Arpoved!`)
     .setColor(`#00FF00`)
     .setDescription(`**Your Entry for [this giveaway](https://discord.com/channels/${reaction.message.guild.id}/${reaction.message.channel.id}/${reaction.message.id}) has been approved!**\n\n*by reacting to a message sent by Giveaway, you agree to be messaged.*`)
     user.send(embed)  
   }
- }
 })
-
 client.login(config.token)
