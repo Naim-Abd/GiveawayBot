@@ -3,11 +3,7 @@ const client = new Discord.Client()
 const config = require('./config.json')
 const db = require('quick.db')
 const prefix = config.prefix; 
-const express = require("express");
-const app = express();
-app.get("/", (req, res) => {
-  res.sendStatus(200);
-});
+ 
 
 client.on('ready', () => {
  console.log("App Connected! " , client.user.tag)
